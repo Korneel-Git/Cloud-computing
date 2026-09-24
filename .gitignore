@@ -1,0 +1,14 @@
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+
+# Lokale data
+*.db
+data/
+
+# Editors
+.vscode/
+.idea/
+.DS_Store

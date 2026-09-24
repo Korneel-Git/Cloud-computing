@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="nl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{{ titel }}</title>
+<style>
+  body { font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+         margin: 0; background: #f4f6f9; color: #1a1a1a; }
+  header { background: #003469; color: #fff; padding: 1.1rem 1.5rem; }
+  header h1 { margin: 0; font-size: 1.25rem; }
+  header p { margin: .35rem 0 0; font-size: .85rem; opacity: .8; }
+  main { max-width: 60rem; margin: 1.5rem auto; padding: 0 1.5rem; }
+  section { background: #fff; padding: 1.25rem; margin-bottom: 1.5rem; border-radius: 4px; }
+  h2 { margin: 0 0 1rem; font-size: 1rem; color: #003469; }
+  label { display: block; font-size: .85rem; margin-bottom: .2rem; }
+  input, textarea, select { width: 100%; padding: .5rem; margin-bottom: .8rem;
+         border: 1px solid #ccd3dd; border-radius: 3px; font: inherit; box-sizing: border-box; }
+  textarea { min-height: 4rem; }
+  button { background: #003469; color: #fff; border: 0; padding: .55rem 1.1rem;
+           border-radius: 3px; font: inherit; cursor: pointer; }
+  table { width: 100%; border-collapse: collapse; font-size: .9rem; }
+  th, td { text-align: left; padding: .55rem .4rem; border-bottom: 1px solid #e6eaf0;
+           vertical-align: top; }
+  th { color: #003469; }
+  .gesloten td { opacity: .45; }
+  .vlag { font-size: .75rem; padding: .1rem .45rem; border-radius: 2px; background: #e6eaf0; }
+  .hoog { background: #ffd9e2; }
+  .leeg { color: #666; font-size: .9rem; }
+  footer { max-width: 60rem; margin: 0 auto 2rem; padding: 0 1.5rem;
+           font-size: .8rem; color: #666; }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>{{ titel }}</h1>
+  <p>{{ open_aantal }} open melding(en)</p>
+</header>
+
+<main>
+  <section>
+    <h2>Nieuwe storing melden</h2>
+    <form method="post" action="/melden">
+      <label for="titel">Wat is er aan de hand</label>
+      <input id="titel" name="titel" required maxlength="120"
+             placeholder="Printer op de tweede verdieping doet niets">
+
+      <label for="locatie">Waar</label>
+      <input id="locatie" name="locatie" required maxlength="80"
+             placeholder="Gebouw B, lokaal 2.14">
+
+      <label for="omschrijving">Extra uitleg</label>
+      <textarea id="omschrijving" name="omschrijving" maxlength="600"></textarea>
+
+      <label for="prioriteit">Prioriteit</label>
+      <select id="prioriteit" name="prioriteit">
+        {% for p in prioriteiten %}
+        <option value="{{ p }}" {% if p == 'normaal' %}selected{% endif %}>{{ p }}</option>
+        {% endfor %}
+      </select>
+
+      <button type="submit">Melden</button>
+    </form>
+  </section>
+
+  <section>
+    <h2>Meldingen</h2>
+    {% if meldingen %}
+    <table>
+      <thead>
+        <tr>
+          <th>#</th><th>Wat</th><th>Waar</th><th>Prioriteit</th><th>Gemeld op</th><th></th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for m in meldingen %}
+        <tr class="{{ 'gesloten' if m.status == 'gesloten' else '' }}">
+          <td>{{ m.id }}</td>
+          <td>
+            {{ m.titel }}
+            {% if m.omschrijving %}<br><small>{{ m.omschrijving }}</small>{% endif %}
+          </td>
+          <td>{{ m.locatie }}</td>
+          <td><span class="vlag {{ 'hoog' if m.prioriteit == 'hoog' else '' }}">{{ m.prioriteit }}</span></td>
+          <td>{{ m.gemeld_op }}</td>
+          <td>
+            {% if m.status == 'open' %}
+            <form method="post" action="/sluiten/{{ m.id }}">
+              <button type="submit">Sluiten</button>
+            </form>
+            {% else %}
+            gesloten
+            {% endif %}
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    {% else %}
+    <p class="leeg">Er staan nog geen meldingen open.</p>
+    {% endif %}
+  </section>
+</main>
+
+<footer>
+  Opslag op dit moment: <strong>{{ opslag }}</strong>
+</footer>
+
+</body>
+</html>
