@@ -24,7 +24,7 @@ app = Flask(__name__)
 
 DATABASE_URL = os.environ.get("DATABASE_URL", "")
 SQLITE_PAD = os.environ.get("SQLITE_PAD", "/data/storingen.db")
-APP_TITEL = os.environ.get("APP_TITEL", "Storingsmelder")
+APP_TITEL = os.environ.get("APP_TITEL", "Storingsmelder - Cachetest")
 
 # Postgres en SQLite schrijven hun parameters anders. We zetten het teken hier
 # een keer vast in plaats van het overal in de query's te herhalen.
