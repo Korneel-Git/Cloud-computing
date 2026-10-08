@@ -7,7 +7,7 @@ venv/
 # Lokale data
 *.db
 data/
-
+.env
 # Editors
 .vscode/
 .idea/
