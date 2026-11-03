@@ -22,5 +22,10 @@ spec:
       containers:
       - name: storingsmelder
         image: ghcr.io/korneel-git/storingsmelder:1.1
+
+        env:
+        - name: DATABASE_URL
+          value: "postgresql://storingsmelder:wachtwoord123@db:5432/storingsmelder"
+
         ports:
         - containerPort: 8000
