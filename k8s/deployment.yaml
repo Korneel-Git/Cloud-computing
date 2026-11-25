@@ -20,12 +20,15 @@ spec:
 
     spec:
       containers:
-      - name: storingsmelder
-        image: ghcr.io/korneel-git/storingsmelder:1.1
+        - name: storingsmelder
+          image: ghcr.io/korneel-git/storingsmelder:1.1
 
-        env:
-        - name: DATABASE_URL
-          value: "postgresql://storingsmelder:wachtwoord123@db:5432/storingsmelder"
+          env:
+            - name: DATABASE_URL
+              valueFrom:
+                secretKeyRef:
+                  name: db-secret
+                  key: DATABASE_URL
 
-        ports:
-        - containerPort: 8000
+          ports:
+            - containerPort: 8000

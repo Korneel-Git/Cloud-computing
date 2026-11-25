@@ -18,18 +18,36 @@ spec:
 
     spec:
       containers:
-      - name: postgres
-        image: postgres:18
+        - name: postgres
+          image: postgres:18
 
-        env:
-        - name: POSTGRES_USER
-          value: "storingsmelder"
+          env:
+            - name: POSTGRES_USER
+              valueFrom:
+                secretKeyRef:
+                  name: db-secret
+                  key: POSTGRES_USER
 
-        - name: POSTGRES_PASSWORD
-          value: "wachtwoord123"
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: db-secret
+                  key: POSTGRES_PASSWORD
 
-        - name: POSTGRES_DB
-          value: "storingsmelder"
+            - name: POSTGRES_DB
+              valueFrom:
+                secretKeyRef:
+                  name: db-secret
+                  key: POSTGRES_DB
 
-        ports:
-        - containerPort: 5432
+          ports:
+            - containerPort: 5432
+
+          volumeMounts:
+            - name: postgres-storage
+              mountPath: /var/lib/postgresql
+
+      volumes:
+        - name: postgres-storage
+          persistentVolumeClaim:
+            claimName: postgres-pvc

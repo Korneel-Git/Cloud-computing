@@ -8,7 +8,11 @@ venv/
 *.db
 data/
 .env
+
 # Editors
 .vscode/
 .idea/
 .DS_Store
+
+# Kubernetes secrets
+k8s/secret.yaml
