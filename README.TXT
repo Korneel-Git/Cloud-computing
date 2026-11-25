@@ -1,50 +1,54 @@
-# Cloud Computing
+Cloud Computing
+Repository clonen
 
-## Repository clonen
-
-```bash
 git clone https://github.com/Korneel-Git/Cloud-computing.git
+
 cd Cloud-computing
-```
 
-## Kubernetes deployment
+Secret aanmaken
 
-Maak een nieuwe namespace aan:
+Maak een kopie van het voorbeeldbestand:
 
-```bash
+copy k8s\secret.example.yaml k8s\secret.yaml
+
+Vul daarna de waarden in secret.yaml in.
+
+Vereisten
+
+Ingress-NGINX moet geïnstalleerd zijn op het cluster.
+
+Deployment
+
+Maak een namespace aan:
+
 kubectl create namespace proef
-```
 
-Deploy de applicatie en de database:
+Deploy alle resources:
 
-```bash
 kubectl apply -f k8s/ -n proef
-```
 
-Controleer of alle resources correct zijn aangemaakt:
+Controleer of alles correct draait:
 
-```bash
 kubectl get all -n proef
-```
 
-## Applicatie openen
+Hostnaam
 
-Maak een port-forward naar de service:
+Voeg volgende regel toe aan het hosts-bestand van Windows:
 
-```bash
-kubectl port-forward service/storingsmelder 8000:80 -n proef
-```
+127.0.0.1 storingsmelder.local
 
-Open daarna de applicatie in je browser:
+Open daarna in de browser:
 
-```text
-http://localhost:8000
-```
+http://storingsmelder.local
 
-## Opruimen
+Bewijs
 
-Verwijder alle resources door de namespace te verwijderen:
+De map bewijs bevat een screenshot waaruit blijkt dat de data behouden blijft nadat de PostgreSQL-pod verwijderd en opnieuw aangemaakt wordt.
 
-```bash
+GitHub Actions
+
+Bij elke push naar de main branch wordt automatisch een nieuwe Docker-image gebouwd en gepusht naar GitHub Container Registry (GHCR).
+
+Opruimen
+
 kubectl delete namespace proef
-```
