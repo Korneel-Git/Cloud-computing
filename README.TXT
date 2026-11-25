@@ -1,14 +1,50 @@
+# Cloud Computing
 
+## Repository clonen
+
+```bash
 git clone https://github.com/Korneel-Git/Cloud-computing.git
 cd Cloud-computing
-Copy-Item .env.example .env
+```
 
+## Kubernetes deployment
 
-docker compose up -d --build
-docker compose ps
-curl.exe http://localhost:8000/health
+Maak een nieuwe namespace aan:
 
-Open http://localhost:8000 in je browser.
+```bash
+kubectl create namespace proef
+```
 
+Deploy de applicatie en de database:
 
-docker compose down
+```bash
+kubectl apply -f k8s/ -n proef
+```
+
+Controleer of alle resources correct zijn aangemaakt:
+
+```bash
+kubectl get all -n proef
+```
+
+## Applicatie openen
+
+Maak een port-forward naar de service:
+
+```bash
+kubectl port-forward service/storingsmelder 8000:80 -n proef
+```
+
+Open daarna de applicatie in je browser:
+
+```text
+http://localhost:8000
+```
+
+## Opruimen
+
+Verwijder alle resources door de namespace te verwijderen:
+
+```bash
+kubectl delete namespace proef
+```
