@@ -1,0 +1,20 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+
+metadata:
+  name: storingsmelder
+
+spec:
+  ingressClassName: nginx
+
+  rules:
+    - host: storingsmelder.local
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: storingsmelder
+                port:
+                  number: 80
